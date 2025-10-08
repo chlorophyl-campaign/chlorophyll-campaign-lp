@@ -109,42 +109,147 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
   </section>
 
-  <!-- 以下の構成はそのままでOK -->
-  …（中略・変更不要）…
+    <div class="grid">
+      <section class="card" id="howto">
+        <h2>参加方法</h2>
+        <ol class="list">
+          <li><span class="num">1</span><span>対象店舗で<strong>定期券を提示</strong>（Suica／PASMOなど）。</span></li>
+          <li><span class="num">2</span><span>店頭POPの<strong>QRコード</strong>を読み取り、ガイドに沿って投稿準備。</span></li>
+          <li><span class="num">3</span><span>Instagram または X に <b>#ごほうび定期 #クロロフイル</b> を付けて投稿。</span></li>
+          <li><span class="num">4</span><span>投稿画面をスタッフに提示で<strong>追加特典</strong>（サンプル or ポイント）。</span></li>
+        </ol>
+        <div class="copybox">
+          <input class="input" id="caption" value="今日のごほうびはクロロフイルで肌リセット✨ #ごほうび定期 #クロロフイル" aria-label="投稿文例">
+          <button class="btn secondary" id="copyCaption">投稿文例をコピー</button>
+        </div>
+        <p class="legal">※ Instagramは仕様上、投稿画面に自動で文字を差し込めません。ボタンでハッシュタグをコピー後、アプリ側で貼り付けてください。</p>
+      </section>
+
+      <aside class="card">
+        <h3>店頭QRからできること</h3>
+        <div class="qrbox">
+          <div class="qr">QR</div>
+          <div>
+            <ul class="list">
+              <li><span class="num">A</span><span>ハッシュタグをワンタップコピー</span></li>
+              <li><span class="num">B</span><span>Xのツイート作成（タグ自動挿入）を起動</span></li>
+              <li><span class="num">C</span><span>Instagram投稿の手順を見る（コピー→アプリ起動）</span></li>
+            </ul>
+            <p class="legal">※ 実運用ではこの枠に実際のQR画像を配置してください。</p>
+          </div>
+        </div>
+
+        <h3 style="margin-top:18px">開催スケジュール</h3>
+        <div class="kpis">
+          <div class="kpi"><b>1月</b><div>サンプルごほうび</div></div>
+          <div class="kpi"><b>2月</b><div>うるおいごほうび（体験）</div></div>
+          <div class="kpi"><b>3月</b><div>SNSコンテスト</div></div>
+        </div>
+      </aside>
+    </div>
+
+    <section class="card" style="margin-top:18px">
+      <h2>3月：SNSコンテスト（Instagram＋X）</h2>
+      <ul class="list">
+        <li><span class="num">1</span><span><b>Instagram賞：</b>映え投稿を公式が選定</span></li>
+        <li><span class="num">2</span><span><b>X賞：</b>いいね／RT上位＋公式チェック</span></li>
+        <li><span class="num">3</span><span><b>抽選賞：</b>投稿者全員からランダム</span></li>
+      </ul>
+      <p class="legal">集計はハッシュタグ検索＋スクリーンショット保存で行います。非表示設定の方はスクリーンショット提出をお願いする場合があります。</p>
+    </section>
+
+    <section class="card" style="margin-top:18px">
+      <h2>よくある質問</h2>
+      <details>
+        <summary>Instagramの投稿画面を自動で開いてテキストを入れられますか？</summary>
+        <p>できません。Instagramは外部リンクから投稿画面へテキストを自動挿入する公式手段を提供していません。ハッシュタグは「コピー→貼り付け」でご利用ください。</p>
+      </details>
+      <details>
+        <summary>Xはタグ入りで投稿できますか？</summary>
+        <p>できます。「Xで投稿」ボタンから <code>twitter.com/intent/tweet</code> を用いて、ハッシュタグ入りの作成画面を開きます。</p>
+      </details>
+    </section>
 
   <p class="footer">© クロロフイル美顔教室｜キャンペーン運営事務局</p>
 </div>
 
 <script>
   const TAGS = "#ごほうび定期 #クロロフイル";
+  const CAPTION_TEXT = "今日のごほうびはクロロフイルで肌リセット✨ #ごほうび定期 #クロロフイル";
 
+  // Instagram起動（タグを先にコピー）
   function tryOpenInstagram(){
     const scheme = "instagram://camera";
     const web = "https://www.instagram.com/";
-    navigator.clipboard.writeText(TAGS).then(()=>{
+    copyText(TAGS).then(()=>{
       alert("ハッシュタグをコピーしました。Instagramでキャプション欄に貼り付けてください。");
       const t = Date.now();
-      window.location.href = scheme;
-      setTimeout(()=>{ if(Date.now() - t < 800){ window.location.href = web; } }, 600);
+      location.href = scheme;
+      setTimeout(()=>{ if(Date.now() - t < 800) location.href = web; }, 600);
     }).catch(()=>{
-      alert("コピーできませんでした。下のタグを長押しでコピーしてください：\\n" + TAGS);
-      window.location.href = web;
+      alert("コピーできませんでした。下のタグを長押しでコピーしてください：\n" + TAGS);
+      location.href = web;
     });
   }
 
-  document.getElementById('copyTags').addEventListener('click', async () => {
-    try{
-      await navigator.clipboard.writeText(TAGS);
-      alert('ハッシュタグをコピーしました：\\n' + TAGS);
-    }catch(e){ alert('コピーできませんでした。手動で選択してください。');}
+  // 安全なコピー（clipboard未対応時はテキストエリアfallback）
+  function copyText(text){
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text);
+    } else {
+      return new Promise((resolve, reject) => {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.left = '-9999px';
+        document.body.appendChild(ta);
+        ta.focus();
+        ta.select();
+        try {
+          const ok = document.execCommand('copy');
+          document.body.removeChild(ta);
+          ok ? resolve() : reject();
+        } catch(e){
+          document.body.removeChild(ta);
+          reject(e);
+        }
+      });
+    }
+  }
+
+  // DOM準備後にイベントを確実登録
+  document.addEventListener("DOMContentLoaded", () => {
+    const copyTagsBtn = document.getElementById('copyTags');
+    const copyCaptionBtn = document.getElementById('copyCaption');
+    const captionInput = document.getElementById('caption');
+    const tweetBtn = document.getElementById('tweetBtn');
+    const instaBtn = document.getElementById('instaBtn');
+
+    // 入力欄に既定文をセット（初期表示）
+    if (captionInput) captionInput.value = CAPTION_TEXT;
+
+    // ① ハッシュタグコピー
+    copyTagsBtn?.addEventListener('click', () => {
+      copyText(TAGS)
+        .then(()=> alert('ハッシュタグをコピーしました：\n' + TAGS))
+        .catch(()=> alert('コピーできませんでした。手動で選択してください。'));
+    });
+
+    // ② 投稿文例コピー（←ここが要件）
+    copyCaptionBtn?.addEventListener('click', () => {
+      const text = (captionInput && captionInput.value) ? captionInput.value : CAPTION_TEXT;
+      copyText(text)
+        .then(()=> alert('投稿文例をコピーしました。'))
+        .catch(()=> alert('コピーできませんでした。手動で選択してください。'));
+    });
+
+    // ③ Xはハッシュタグのみ（中略防止に末尾スペース）
+    if (tweetBtn) {
+      const encoded = encodeURIComponent(TAGS + " ");
+      tweetBtn.href = "https://twitter.com/intent/tweet?text=" + encoded;
+    }
+
+    // ④ Instagram起動
+    instaBtn?.addEventListener('click', tryOpenInstagram);
   });
-
-  const tweetBtn = document.getElementById('tweetBtn');
-  const encoded = encodeURIComponent(TAGS);
-  tweetBtn.href = "https://twitter.com/intent/tweet?text=" + encoded;
-
-  const instaBtn = document.getElementById('instaBtn');
-  instaBtn.addEventListener('click', tryOpenInstagram);
 </script>
-</body>
-</html>
