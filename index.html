@@ -77,8 +77,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <p class="sub">定期券を見せるだけで、サンプル進呈や店頭体験。<br>投稿時は <b>#ごほうび定期</b> と <b>#クロロフイル</b> を付けて参加！</p>
       <div class="hero-cta">
         <button class="btn" id="copyTags" aria-label="ハッシュタグをコピー">＃タグをコピー</button>
-        <a class="btn secondary" id="tweetBtn" href="#" target="_blank" rel="noopener">Xで投稿（タグ自動挿入）</a>
-        <button class="btn secondary" id="instaBtn" aria-label="Instagramで投稿">Instagramで投稿（コピー→アプリ起動）</button>
+        <a class="btn secondary"
+   id="tweetBtn"
+   href="https://twitter.com/intent/tweet?text=%23ごほうび定期%20%23クロロフイル"
+   target="_blank"
+   rel="noopener"
+   onclick="dataLayer.push({event:'share', platform:'X'});">
+   Xで投稿（タグ自動挿入）
+</a>
+        <button class="btn secondary"
+        id="instaBtn"
+        aria-label="Instagramで投稿"
+        onclick="dataLayer.push({event:'share', platform:'Instagram'}); tryOpenInstagram();">
+  Instagramで投稿（コピー→アプリ起動）
+</button>
         <a class="btn ghost" href="#howto">参加方法を見る</a>
       </div>
       <div class="hashtags">
