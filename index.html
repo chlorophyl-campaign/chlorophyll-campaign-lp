@@ -141,7 +141,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
   const tweetBtn = document.getElementById('tweetBtn');
   const encoded = encodeURIComponent(TAGS);
-  tweetBtn.href = "https://twitter.com/intent/tweet?text=" + encoded + "&url=" + encodeURIComponent(location.href);
+  tweetBtn.href = "https://twitter.com/intent/tweet?text=" + encoded;
 
   const instaBtn = document.getElementById('instaBtn');
   instaBtn.addEventListener('click', tryOpenInstagram);
