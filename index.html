@@ -243,4 +243,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         .catch(()=> alert('コピーできませんでした。手動で選択してください。'));
     });
 
-    // ③ Xはハッシュタグのみ（中略防止に末尾スペース）
+     // ③ Xはハッシュタグのみ（中略防止に末尾スペース）
+    if (tweetBtn) {
+      const encoded = encodeURIComponent(TAGS + " ");
+      tweetBtn.href = "https://twitter.com/intent/tweet?text=" + encoded;
+    }
+
+    // ④ Instagram起動
+    instaBtn?.addEventListener('click', tryOpenInstagram);
+  });
+</script>
